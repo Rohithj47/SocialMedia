@@ -7,14 +7,21 @@ const dotenv = require('dotenv')
 const userRoute = require('./routes/users')
 const authRoute = require('./routes/auth')
 const postRoute = require('./routes/post')
+const conversationRoute = require("./routes/conversations");
+const messageRoute = require("./routes/messages");
+const { Server } = require("socket.io");
 const multer = require("multer")
 const path = require('path')
 const cors = require('cors')
+
+// Add a Http Server 
+const http = require('http');
 
 dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3000
+const server = http.createServer(app);
 
 mongoose.connect(
     process.env.MONGOURI, () => {
@@ -56,6 +63,8 @@ app.post('/api/upload',upload.single("file"), (req,res) => {
 app.use('/api/users', userRoute)
 app.use('/api/auth', authRoute)
 app.use('/api/post', postRoute)
+app.use("/api/conversations", conversationRoute);
+app.use("/api/messages", messageRoute);
 
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
     app.use(express.static('socialmediafrontend/build'));
@@ -65,6 +74,53 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging')
     });
 }
 
-app.listen(PORT, () => {
+// Add socketio server 
+const io = new Server(server, {
+    cors:
+    {
+        origin : "*"
+    }
+})
+
+let users = [];
+
+const addUser = (userId, socketId) => {
+  !users.some((user) => user.userId === userId) &&
+    users.push({ userId, socketId });
+};
+
+const removeUser = (socketId) => {
+    users = users.filter((user) => user.socketId !== socketId);
+};
+
+const getUser = (userId) => {
+    return users.find((user) => user.userId === userId);
+};
+
+io.on('connection', (socket) => {
+    console.log('A Client is connected')
+    socket.on("addUser", (userId) => {
+        addUser(userId, socket.id);
+        io.emit("getUsers", users);
+      });
+    
+      //send and get message
+    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+        const user = getUser(receiverId);
+        io.to(user.socketId).emit("getMessage", {
+        senderId,
+        text,
+        });
+    });
+
+    //when disconnect
+    socket.on("disconnect", () => {
+        console.log("a user disconnected!");
+        removeUser(socket.id);
+        io.emit("getUsers", users);
+    });
+})
+
+server.listen(PORT, () => {
     console.log(`listening on port ${PORT}`)
 })
