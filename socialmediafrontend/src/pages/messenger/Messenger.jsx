@@ -8,6 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { io } from "socket.io-client";
 import { CallMerge } from "@material-ui/icons";
+import { config } from "../../urlConfig";
 
 export default function Messenger() {
   const [conversations, setConversations] = useState([]);
@@ -23,7 +24,7 @@ export default function Messenger() {
   
 
   useEffect(() => {
-    socket.current = io("ws://localhost:3000");
+    socket.current = io(`${config.SOCKET_URI}`);
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
@@ -63,7 +64,7 @@ export default function Messenger() {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const res = await axios.get("/messages/" + currentChat?._id);
+        const res = await axios.get(config.SERVER_URI + "/messages/" + currentChat?._id);
         setMessages(res.data);
       } catch (err) {
         console.log(err);
@@ -91,7 +92,7 @@ export default function Messenger() {
     });
 
     try {
-      const res = await axios.post("/messages", message);
+      const res = await axios.post(`${config.SERVER_URI}/messages`, message);
       setMessages([...messages, res.data]);
       setNewMessage("");
     } catch (err) {

@@ -6,15 +6,16 @@ import Rightbar from "../../components/rightbar/Rightbar";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios"
 import { Link, useParams } from "react-router-dom";
+import { config } from "../../urlConfig";
 
 export default function Profile() {
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER
+  const PF = config.IMG_URI
   const [user, setUser] = useState({})
   let { username } = useParams()
   useEffect(() => {
       const fetchUser = async () => {
         try{
-          const res = await axios.get(`/users?username=${username}`)
+          const res = await axios.get(`${config.SERVER_URI}/users?username=${username}`)
           setUser(res.data)
         }catch(err){
           console.log(err)

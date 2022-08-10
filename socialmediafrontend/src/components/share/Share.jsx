@@ -5,10 +5,11 @@ import { AuthContext } from "../../context/AuthContext";
 import { useRef } from "react";
 import { useState } from "react";
 import axios from "axios"
+import { config } from "../../urlConfig"
 
 export default function Share() {
   const { user } = useContext(AuthContext)
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const PF = config.IMG_URI
   const desc = useRef()
   const [file, setFile] = useState(null)
 
@@ -24,10 +25,10 @@ export default function Share() {
       data.append("name", filename)
       data.append("file", file)
       newPost.img = filename
-      await axios.post('/upload', data)
+      await axios.post(`${config.SERVER_URI}/upload`, data)
                 .catch((err) => { console.log(err)}) 
     }
-    await axios.post('/post', newPost)
+    await axios.post(`${config.SERVER_URI}/post`, newPost)
               .then(res => window.location.reload())
               .catch((err) => { console.log(err) }) 
     

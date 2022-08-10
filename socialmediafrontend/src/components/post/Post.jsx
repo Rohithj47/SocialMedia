@@ -7,11 +7,12 @@ import { format, render, cancel, register } from 'timeago.js';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { config } from "../../urlConfig"
 
 function Post({post}) {
     const [like, setLike] = useState(post.likes.length)
     const [user, setUser] = useState({})
-    const PF = process.env.REACT_APP_PUBLIC_FOLDER
+    const PF = config.IMG_URI
     const { user: currentUser } = useContext(AuthContext)
     const [isLiked, setIsLiked] = useState()
 
@@ -21,7 +22,7 @@ function Post({post}) {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const res = await axios.get(`/users?userId=${post.userId}`)
+            const res = await axios.get(`${config.SERVER_URI}/users?userId=${post.userId}`)
             setUser(res.data)
         }
         fetchUser()
@@ -29,14 +30,14 @@ function Post({post}) {
 
     const likeHandler = () => {
         try {
-          axios.put("/post/" + post._id + "/like", { userId: currentUser._id });
+          axios.put(config.SERVER_URI + "/post/" + post._id + "/like", { userId: currentUser._id });
         } catch (err) {}
         setLike(isLiked ? like - 1 : like + 1);
         setIsLiked(!isLiked);
     };
 
     const deletePost = () => {
-        axios.delete(`/post/${post._id}`, { data: { userId: currentUser._id } }).then(() => window.location.reload())
+        axios.delete(`${config.SERVER_URI}/post/${post._id}`, { data: { userId: currentUser._id } }).then(() => window.location.reload())
           .catch((err) => console.log(err))
     }
 

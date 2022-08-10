@@ -17,9 +17,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { config } from "../../urlConfig";
 
 export default function Rightbar({ user }) {
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER
+  const PF = config.IMG_URI
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext)
   const [followed, setFollowed] = useState(
@@ -56,7 +57,7 @@ export default function Rightbar({ user }) {
       data.append("name", filename)
       data.append("file", profilePic)
       userUpdate.profilePicture = filename
-      await axios.post('/upload', data)
+      await axios.post(`${config.SERVER_URI}/upload`, data)
                 .catch((err) => { console.log(err)}) 
     }
     if(coverPic){
@@ -65,10 +66,10 @@ export default function Rightbar({ user }) {
       data.append("name", filename)
       data.append("file", coverPic)
       userUpdate.coverPicture = filename
-      await axios.post('/upload', data)
+      await axios.post(`${config.SERVER_URI}/upload`, data)
                 .catch((err) => { console.log(err)}) 
     }
-    axios.put(`/users/${currentUser._id}`, userUpdate)
+    axios.put(`${config.SERVER_URI}/users/${currentUser._id}`, userUpdate)
          .then(window.location.reload())
          .catch(err => console.log(err))
     setOpen(false);
@@ -83,7 +84,7 @@ export default function Rightbar({ user }) {
   useEffect(() => {
     const getFriends = async () => {
       try {
-        const friendList = await axios.get("/users/friends/" + user._id);
+        const friendList = await axios.get(config.SERVER_URI + "/users/friends/" + user._id);
         setFriends(friendList.data);
       } catch (err) {
         console.log(err);
@@ -95,12 +96,12 @@ export default function Rightbar({ user }) {
   const handleClick = async () => {
     try {
       if (followed) {
-        await axios.put(`/users/${user._id}/unfollow`, {
+        await axios.put(`${config.SERVER_URI}/users/${user._id}/unfollow`, {
           userId: currentUser._id,
         });
         dispatch({ type: "UNFOLLOW", payload: user._id });
       } else {
-        await axios.put(`/users/${user._id}/follow`, {
+        await axios.put(`${config.SERVER_URI}/users/${user._id}/follow`, {
           userId: currentUser._id,
         });
         dispatch({ type: "FOLLOW", payload: user._id });

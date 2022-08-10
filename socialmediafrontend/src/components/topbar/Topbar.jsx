@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom'
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext'
 import { useRef } from 'react';
+import { config } from "../../urlConfig"
 
 function Topbar(props) {
-    const PF = process.env.REACT_APP_PUBLIC_FOLDER
+    const PF = config.IMG_URI
     const { user, dispatch } = useContext(AuthContext)
     const search = useRef()
     const handleEnter = (e) => {
@@ -50,8 +51,9 @@ function Topbar(props) {
                 </div>
                 <div className="topbarIcons">
                     <div className="topbarIconItem">
-                        <Chat />
-                        <span className="topbarIconBadge">2</span>
+                        <Link to={`/messenger`} style = {{textDecoration: "none"}} >
+                            <Chat className='topbarLink' />
+                        </Link>
                     </div>
                     <button id= "signOut" title="Sign Out" className='topbarSignOut' onClick={handleSignOut} >
                         <div className="topbarIconItem">

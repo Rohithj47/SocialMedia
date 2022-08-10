@@ -4,6 +4,7 @@ import Share  from '../share/Share';
 import Post from '../post/Post';
 import axios from 'axios'
 import { AuthContext } from '../../context/AuthContext';
+import { config } from "../../urlConfig"
 
 
 function Feed({username}) {
@@ -13,8 +14,8 @@ function Feed({username}) {
     useEffect(()=>{
         const fetchPosts = async() =>{
             const res = username 
-            ? await axios.get('/post/profile/' + username)
-            :await axios.get(`post/timeline/${user._id}` )
+            ? await axios.get(config.SERVER_URI + '/post/profile/' + username)
+            :await axios.get(`${config.SERVER_URI}/post/timeline/${user._id}` )
             setPosts(res.data.sort((p1,p2) => {
                 return new Date(p2.createdAt) - new Date(p1.createdAt)
             }))

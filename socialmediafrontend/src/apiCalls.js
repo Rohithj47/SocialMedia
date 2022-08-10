@@ -1,8 +1,9 @@
 import axios from "axios";
+import { config } from "./urlConfig"
 
 export const loginCall = async (userCredential, dispatch) => {
   dispatch({ type: "LOGIN_START" });
-  axios.post('/auth/login', userCredential)
+  axios.post(`${config.SERVER_URI}/auth/login`, userCredential)
         .then((res)=>{
           dispatch({ type: "LOGIN_SUCCESS", payload: res.data})
         })
@@ -14,7 +15,7 @@ export const loginCall = async (userCredential, dispatch) => {
 
 export const registerCall = async(registerCredential, dispatch)=> {
   dispatch({ type: "LOGIN_START" });
-  axios.post('/auth/register', registerCredential)
+  axios.post(`${config.SERVER_URI}/auth/register`, registerCredential)
         .then((res)=>{
           dispatch({ type: "LOGIN_SUCCESS", payload: res.data})
         })

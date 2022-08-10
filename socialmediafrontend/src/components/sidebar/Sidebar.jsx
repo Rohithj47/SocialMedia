@@ -13,9 +13,10 @@ import {
 } from "@material-ui/icons";
 import { Users } from '../../dummyData';
 import CloseFriend from '../closeFriend/CloseFriend';
+import { config } from "../../urlConfig"
 
 function Sidebar(props) {
-    const PF = process.env.REACT_APP_PUBLIC_FOLDER
+    const PF = config.IMG_URI
     return (
         <div className='sidebar'>
             <div className="sidebarWrapper">
