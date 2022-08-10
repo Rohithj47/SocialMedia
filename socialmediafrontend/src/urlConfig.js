@@ -5,9 +5,8 @@ const configs = {
         SOCKET_URI : 'ws://localhost:3000'
     },
     production: {
-        SERVER_URI: 'http://https://instafacechat.herokuapp.com/api',
-        IMG_URI : 'http://instafacechat.herokuapp.com/images/',
-        SOCKET_URI : 'ws://instafacechat.herokuapp.com'
+        SERVER_URI: '/api',
+        IMG_URI : '/images/'
     },
   };
   

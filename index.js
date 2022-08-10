@@ -34,25 +34,7 @@ app.use(cors());
 
 
 app.use(express.json())
-app.use(helmet(
-    helmet.contentSecurityPolicy({
-        directives: {
-          defaultSrc: ["'self'", 'https://instafacechat.herokuapp.com/'],
-          connectSrc: ["'self'", 'https://instafacechat.herokuapp.com/'],
-          frameSrc: ["'self'", 'https://instafacechat.herokuapp.com/'],
-          childSrc: ["'self'", 'https://instafacechat.herokuapp.com/'],
-          scriptSrc: ["'self'", 'https://instafacechat.herokuapp.com/'],
-          styleSrc: [
-            "'self'",
-            'https://fonts.googleapis.com',
-            'https://checkout.stripe.com',
-          ],
-          fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-          imgSrc: ["'self'", 'https://instafacechat.herokuapp.com/'],
-          baseUri: ["'self'"],
-        },
-      })
-))
+app.use(helmet())
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan('common'))
 console.log(path.join(__dirname + 'public/images'))

@@ -24,7 +24,7 @@ export default function Messenger() {
   
 
   useEffect(() => {
-    socket.current = io(`${config.SOCKET_URI}`);
+    socket.current = io();
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
