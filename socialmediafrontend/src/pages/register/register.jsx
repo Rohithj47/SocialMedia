@@ -36,7 +36,7 @@ export default function Register() {
             <input placeholder="Password" className="loginInput" ref= {password} type="password" />
             <input placeholder="Password Again" className="loginInput" ref={passwordAgain} type="password" />
             <button className="loginButton" type="submit">Sign Up</button>
-            <button className="loginRegisterButton">
+            <button className="loginRegisterButton" onClick={() => window.location.href = '/login'}>
               Log into Account
             </button>
           </form>
