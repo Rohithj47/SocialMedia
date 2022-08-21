@@ -52,7 +52,7 @@ export default function Messenger() {
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await axios.get("/conversations/" + user._id);
+        const res = await axios.get(config.SERVER_URI +"/conversations/" + user._id);
         setConversations(res.data);
       } catch (err) {
         console.log(err);
