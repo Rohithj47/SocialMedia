@@ -1,12 +1,12 @@
 export const Users = [
     {
       id:"62d98b1f63b5350ce1da5c52",
-      profilePicture: "1658424530707test-pic1.jpeg",
+      profilePicture: "images/1658424530707test-pic1.jpeg",
       username: "_kritika.modi_",
     },
     {
       id:"62d8c4ba803731b1ae3461d7",
-      profilePicture: "1659535373683RohithJanardhan_pic.jpg",
+      profilePicture: "images/1659535373683RohithJanardhan_pic.jpg",
       username: "Smith",
     }
   ];
